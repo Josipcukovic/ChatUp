@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "252654806846",
+    "project_id": "chatup-86ea6",
+    "storage_bucket": "chatup-86ea6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:252654806846:android:3ee37b093232592911ae6f",
+        "android_client_info": {
+          "package_name": "josip.cukovic.chatup"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "252654806846-81vee9uhcjufd68peuolahdjljb0mq96.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "josip.cukovic.chatup",
+            "certificate_hash": "2201714ecf828aee0ee61264f2cc68388269ff8b"
+          }
+        },
+        {
+          "client_id": "252654806846-q0nei384019t1b1bbttpqnndc332lil3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvZ_bxb8M2WyB6YfTzXlVr_WeK234Etlw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "252654806846-q0nei384019t1b1bbttpqnndc332lil3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
