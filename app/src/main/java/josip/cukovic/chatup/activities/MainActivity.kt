@@ -28,5 +28,3 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-/*
-class korisnik(var ime : String, var prezime: String)*/

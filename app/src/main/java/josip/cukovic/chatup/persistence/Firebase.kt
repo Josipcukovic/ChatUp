@@ -17,47 +17,57 @@ object Firebase {
     private var db = FirebaseDatabase.getInstance()
     private val usersDbRef = db.getReference("Users")
 
-
   fun createUser(email : String,password : String,userName: String,context: Context){
 
       authFirebase.createUserWithEmailAndPassword(email,password)
               .addOnCompleteListener{
                   task: Task<AuthResult> ->
                   if(task.isSuccessful){
-                      val currentUser = authFirebase.currentUser
-                      val currentUserId = currentUser!!.uid
-                      val userNode = usersDbRef.child(currentUserId)
-                      val user = User(userName,email,password)
-                      userNode.setValue(user).addOnCompleteListener{
-                          task: Task<Void> ->
-                          if(task.isSuccessful){
-                              Toast.makeText(context, "hurraaaj", Toast.LENGTH_SHORT).show()
-
-                              val intent = Intent(context, AuthActivity::class.java)
-                              ///zatvori sve prijasnje activity-e
-                              intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                              intent.putExtra("name",userName)
-                              startActivity(context,intent,null)
-
-                          }else{
-                              Toast.makeText(context, "nije u bazi", Toast.LENGTH_SHORT).show()
-                          }
-                      }
+                     addUserToDatabase(email,password,userName,context)
                   }else{
                       Toast.makeText(context, "imamo Problem", Toast.LENGTH_SHORT).show()
                   }
               }
   }
+    private fun addUserToDatabase(email : String,password : String,userName: String,context: Context){
 
-    /*authFirebase.signInWithEmailAndPassword("lala@gmail.com","123456")
-                .addOnCompleteListener{
-                    task : Task<AuthResult> ->
-                    if(task.isSuccessful){
-                        Toast.makeText(this, "nez, logiran je", Toast.LENGTH_LONG).show()
-                    }else{
-                        Toast.makeText(this, "nez, nije logiran", Toast.LENGTH_SHORT).show()
-                    }
-                }*/
+        val currentUser = authFirebase.currentUser
+        val currentUserId = currentUser!!.uid
+        val userNode = usersDbRef.child(currentUserId)
+        val user = User(userName,email,password)
 
+        userNode.setValue(user).addOnCompleteListener{
+                task: Task<Void> ->
+
+            if(task.isSuccessful){
+                Toast.makeText(context, "hurraaaj", Toast.LENGTH_SHORT).show()
+
+                val intent = Intent(context, AuthActivity::class.java)
+                ///zatvori sve prijasnje activity-e
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(context,intent,null)
+
+            }else{
+                Toast.makeText(context, "nije u bazi", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+    }
+
+    fun loginUser(email : String,password : String,context: Context){
+        authFirebase.signInWithEmailAndPassword(email,password)
+            .addOnCompleteListener{
+                    task: Task<AuthResult> ->
+                if (task.isSuccessful){
+                    val intent = Intent(context,AuthActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(context,intent,null)
+
+                }else{
+                    Toast.makeText(context, task.exception.toString(), Toast.LENGTH_LONG).show()
+
+                }
+            }
+    }
 
 }
