@@ -29,6 +29,7 @@ class RegisterActivity : AppCompatActivity() {
                 Toast.makeText(this, "Please fill in all the fields", Toast.LENGTH_SHORT).show()
             }else{
                 val userName = name + " " + surname
+                Toast.makeText(this, "Your profile is being created", Toast.LENGTH_LONG).show()
                 Firebase.createUser(email, password, userName, applicationContext)
             }
         }
