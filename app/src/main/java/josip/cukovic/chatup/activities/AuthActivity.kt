@@ -6,11 +6,14 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import josip.cukovic.chatup.R
 import josip.cukovic.chatup.adapters.FragmentAdapter
+import josip.cukovic.chatup.adapters.UsersRecyclerAdapter
 import josip.cukovic.chatup.databinding.ActivityAuthBinding
 import josip.cukovic.chatup.persistence.Firebase
+import josip.cukovic.chatup.persistence.UserRepository
 
 class AuthActivity : AppCompatActivity() {
     private lateinit var authBinding: ActivityAuthBinding
@@ -27,15 +30,18 @@ class AuthActivity : AppCompatActivity() {
 
         viewPager.adapter = FragmentAdapter(supportFragmentManager)
         authBinding.tabLayout.setupWithViewPager(viewPager)
-//ako bude potrebe....
-        /*viewPager.addOnPageChangeListener(object: ViewPager.OnPageChangeListener{
+
+        viewPager.addOnPageChangeListener(object: ViewPager.OnPageChangeListener{
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
 
             }
 
             override fun onPageSelected(position: Int) {
                 if(position == 0){
-
+                    ///refreshaj podatke koji se prikazuju
+                    val adapter = findViewById<RecyclerView>(R.id.userRecycler).adapter as UsersRecyclerAdapter
+                    adapter.dataAdded(UserRepository.users)
+                    findViewById<RecyclerView>(R.id.userRecycler).scrollToPosition(adapter.itemCount-1)
                 }
             }
 
@@ -43,7 +49,7 @@ class AuthActivity : AppCompatActivity() {
 
             }
 
-        })*/
+        })
 
 
     }
@@ -59,10 +65,13 @@ class AuthActivity : AppCompatActivity() {
         super.onOptionsItemSelected(item)
         if(item.itemId == R.id.LogoutOption){
             Firebase.logOut()
-            val intent = Intent(this,MainActivity::class.java)
-            startActivity(intent)
+            val logoutIntent = Intent(this,MainActivity::class.java)
+            startActivity(logoutIntent)
             Toast.makeText(this, "You have successfully logged out", Toast.LENGTH_SHORT).show()
             finish()
+        }else if(item.itemId == R.id.ProfileOption){
+            val profileIntent = Intent(this, ProfileActivity::class.java)
+            startActivity(profileIntent)
         }
         return true
     }

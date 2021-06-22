@@ -16,7 +16,7 @@ class UsersRecyclerAdapter(users: MutableList<User>): RecyclerView.Adapter<Users
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UsersViewHolder {
         val userView = LayoutInflater.from(parent.context).inflate(R.layout.user_display,parent,false)
-        return UsersViewHolder(userView)
+        return UsersViewHolder(userView,parent.context)
     }
 
     override fun onBindViewHolder(holder: UsersViewHolder, position: Int) {
@@ -25,5 +25,13 @@ class UsersRecyclerAdapter(users: MutableList<User>): RecyclerView.Adapter<Users
 
     override fun getItemCount(): Int {
         return users.size
+    }
+
+    fun dataAdded(user: MutableList<User>){
+        val number = itemCount
+        this.users.clear()
+        this.users.addAll((user))
+        if(itemCount == number) return
+        notifyItemInserted(itemCount - 1)
     }
 }
