@@ -78,4 +78,8 @@ object Firebase {
             }
     }
 
+    fun logOut(){
+        authFirebase.signOut()
+    }
+
 }

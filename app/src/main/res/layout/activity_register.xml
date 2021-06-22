@@ -49,17 +49,18 @@
         android:layout_width="0dp"
         android:layout_margin="10dp"
         android:layout_height="wrap_content"
+
         app:layout_constraintTop_toBottomOf="@+id/tvCaption"
         app:layout_constraintLeft_toRightOf="@+id/leftGuideLine"
         app:layout_constraintRight_toLeftOf="@id/rightGuideLine"
         android:textSize="20sp"
-        android:inputType="text"
+        android:inputType="textPersonName"
         android:hint="Unesite svoje ime"/>
 
     <EditText
         android:id="@+id/etSurname"
         android:layout_width="0dp"
-        android:inputType="text"
+        android:inputType="textPersonName"
         android:layout_margin="10dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/etName"
