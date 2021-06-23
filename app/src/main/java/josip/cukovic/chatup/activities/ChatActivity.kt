@@ -1,17 +1,16 @@
 package josip.cukovic.chatup.activities
 
-import android.content.Intent
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import josip.cukovic.chatup.R
 import josip.cukovic.chatup.adapters.MessagesRecyclerAdapter
 import josip.cukovic.chatup.databinding.ActivityChatBinding
 import josip.cukovic.chatup.persistence.Firebase
 import josip.cukovic.chatup.persistence.MessageRepository
+
 
 class ChatActivity : AppCompatActivity() {
     private lateinit var chatBinding: ActivityChatBinding
@@ -50,5 +49,16 @@ class ChatActivity : AppCompatActivity() {
 
     private fun displayData() {
         chatBinding.messageRecycler.adapter = MessagesRecyclerAdapter(MessageRepository.messages)
+        val recycler = chatBinding.messageRecycler
+        val adapter = recycler.adapter as MessagesRecyclerAdapter
+
+        Firebase.loadMessages(adapter,recycler)
     }
+
+    override fun onPause() {
+        super.onPause()
+        Firebase.unsubscribeMessageListener()
+        finish()
+    }
+
 }

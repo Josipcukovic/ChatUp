@@ -6,14 +6,12 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import josip.cukovic.chatup.R
 import josip.cukovic.chatup.adapters.FragmentAdapter
-import josip.cukovic.chatup.adapters.UsersRecyclerAdapter
 import josip.cukovic.chatup.databinding.ActivityAuthBinding
 import josip.cukovic.chatup.persistence.Firebase
-import josip.cukovic.chatup.persistence.UserRepository
+
 
 class AuthActivity : AppCompatActivity() {
     private lateinit var authBinding: ActivityAuthBinding
@@ -25,13 +23,12 @@ class AuthActivity : AppCompatActivity() {
         setupUi()
     }
 
-
     private fun setupUi() {
         viewPager = authBinding.viewPager
         viewPager.adapter = FragmentAdapter(supportFragmentManager)
         authBinding.tabLayout.setupWithViewPager(viewPager)
 
-        viewPager.addOnPageChangeListener(object: ViewPager.OnPageChangeListener{
+        /*viewPager.addOnPageChangeListener(object: ViewPager.OnPageChangeListener{
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
 
             }
@@ -49,7 +46,7 @@ class AuthActivity : AppCompatActivity() {
 
             }
 
-        })
+        })*/
 
 
     }

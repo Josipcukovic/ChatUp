@@ -2,7 +2,6 @@ package josip.cukovic.chatup.persistence
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -11,13 +10,12 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.database.*
-import com.google.firebase.database.ktx.getValue
-import josip.cukovic.chatup.R
 import josip.cukovic.chatup.activities.AuthActivity
+import josip.cukovic.chatup.adapters.MessagesRecyclerAdapter
 import josip.cukovic.chatup.adapters.UsersRecyclerAdapter
 import josip.cukovic.chatup.model.Message
 import josip.cukovic.chatup.model.User
-import kotlin.coroutines.coroutineContext
+
 
 
 object Firebase {
@@ -25,17 +23,20 @@ object Firebase {
     private var db = FirebaseDatabase.getInstance()
     private val usersDbRef = db.getReference("Users")
     private val messagesDbRef = db.getReference("Messages")
-    private var childEventListener: ChildEventListener? = null
+    private var childEventListenerData: ChildEventListener? = null
+    private var childEventListenerMessages: ChildEventListener? = null
 
 ///pokusaj dohvacanja podataka
-    fun loadData(){
-         childEventListener = object: ChildEventListener{
+    fun loadData(adapter: UsersRecyclerAdapter,recyclerView: RecyclerView){
+    childEventListenerData = object: ChildEventListener{
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                // val userId = snapshot.key
                 val userData =  snapshot.getValue() as HashMap<String, String>
                 //if(userId != getCurrentUserId()){
                     val korisnik =  User(userData.get("name").toString(), userData.get("email").toString(), userData.get("id").toString())
                     UserRepository.add(korisnik)
+                    adapter.dataAdded(UserRepository.users)
+                    recyclerView.scrollToPosition(adapter.itemCount-1)
                // }
             }
 
@@ -56,9 +57,45 @@ object Firebase {
             }
 
         }
-         usersDbRef.addChildEventListener(childEventListener as ChildEventListener)
+         usersDbRef.addChildEventListener(childEventListenerData as ChildEventListener)
 
     }
+
+
+    fun loadMessages(adapter: MessagesRecyclerAdapter, recyclerView: RecyclerView){
+        childEventListenerMessages = object: ChildEventListener{
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+
+                val userData =  snapshot.getValue() as HashMap<String, String>
+                val poruka =  Message(userData.get("textMessage").toString(), userData.get("senderId").toString(), userData.get("receiverId").toString())
+                MessageRepository.add(poruka)
+                adapter.dataAdded(MessageRepository.messages)
+                recyclerView.scrollToPosition(adapter.itemCount-1)
+            }
+
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+
+            }
+
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+
+            }
+
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+
+        }
+        messagesDbRef.addChildEventListener(childEventListenerMessages as ChildEventListener)
+
+    }
+
+
+
   fun createUser(email: String, password: String, userName: String, context: Context){
 
       authFirebase.createUserWithEmailAndPassword(email, password)
@@ -133,7 +170,7 @@ object Firebase {
 
     fun logOut(){
         UserRepository.clearThemAll()
-        usersDbRef.removeEventListener(childEventListener as ChildEventListener)
+        usersDbRef.removeEventListener(childEventListenerData as ChildEventListener)
         authFirebase.signOut()
     }
 
@@ -149,4 +186,8 @@ object Firebase {
         return authFirebase.currentUser!!.uid
     }
 
+    fun unsubscribeMessageListener(){
+        MessageRepository.removeAllMessages()
+        messagesDbRef.removeEventListener(childEventListenerMessages as ChildEventListener)
+    }
 }
