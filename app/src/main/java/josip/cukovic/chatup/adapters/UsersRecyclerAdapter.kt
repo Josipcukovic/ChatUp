@@ -34,4 +34,5 @@ class UsersRecyclerAdapter(users: MutableList<User>): RecyclerView.Adapter<Users
         if(itemCount == number) return
         notifyItemInserted(itemCount - 1)
     }
+
 }

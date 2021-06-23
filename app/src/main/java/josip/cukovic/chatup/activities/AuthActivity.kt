@@ -25,9 +25,9 @@ class AuthActivity : AppCompatActivity() {
         setupUi()
     }
 
+
     private fun setupUi() {
         viewPager = authBinding.viewPager
-
         viewPager.adapter = FragmentAdapter(supportFragmentManager)
         authBinding.tabLayout.setupWithViewPager(viewPager)
 

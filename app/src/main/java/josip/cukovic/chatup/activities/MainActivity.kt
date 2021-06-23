@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupUi() {
         Firebase.loadData()
-
         binding.loginBtn.setOnClickListener{
             val loginIntent = Intent(this,LoginActivity::class.java)
             startActivity(loginIntent)

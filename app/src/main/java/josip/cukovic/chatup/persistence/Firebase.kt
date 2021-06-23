@@ -15,24 +15,28 @@ import com.google.firebase.database.ktx.getValue
 import josip.cukovic.chatup.R
 import josip.cukovic.chatup.activities.AuthActivity
 import josip.cukovic.chatup.adapters.UsersRecyclerAdapter
+import josip.cukovic.chatup.model.Message
 import josip.cukovic.chatup.model.User
+import kotlin.coroutines.coroutineContext
 
 
 object Firebase {
     private var authFirebase = FirebaseAuth.getInstance()
     private var db = FirebaseDatabase.getInstance()
     private val usersDbRef = db.getReference("Users")
+    private val messagesDbRef = db.getReference("Messages")
     private var childEventListener: ChildEventListener? = null
+
 ///pokusaj dohvacanja podataka
     fun loadData(){
          childEventListener = object: ChildEventListener{
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                val userId = snapshot.key
+               // val userId = snapshot.key
                 val userData =  snapshot.getValue() as HashMap<String, String>
-                if(userId != getCurrentUserId()){
-                    val korisnik =  User(userData.get("name").toString(), userData.get("email").toString(), userData.get("password").toString())
+                //if(userId != getCurrentUserId()){
+                    val korisnik =  User(userData.get("name").toString(), userData.get("email").toString(), userData.get("id").toString())
                     UserRepository.add(korisnik)
-                }
+               // }
             }
 
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
@@ -60,19 +64,19 @@ object Firebase {
       authFirebase.createUserWithEmailAndPassword(email, password)
               .addOnCompleteListener{ task: Task<AuthResult> ->
                   if(task.isSuccessful){
-                     addUserToDatabase(email, password, userName, context)
+                     addUserToDatabase(email, userName, context)
                   }else{
                       Toast.makeText(context, "imamo Problem", Toast.LENGTH_SHORT).show()
                   }
               }
   }
 
-    private fun addUserToDatabase(email: String, password: String, userName: String, context: Context){
+    private fun addUserToDatabase(email: String, userName: String, context: Context){
 
         val currentUser = authFirebase.currentUser
         val currentUserId = currentUser!!.uid
         val userNode = usersDbRef.child(currentUserId)
-        val user = User(userName, email, password)
+        val user = User(userName, email, currentUserId)
 ///update user displayName
         val profileUpdates = UserProfileChangeRequest.Builder()
                 .setDisplayName(userName).build()
@@ -99,6 +103,17 @@ object Firebase {
                         Toast.makeText(context, "nemas srece", Toast.LENGTH_SHORT).show()
                     }
                 }
+    }
+
+    fun saveMessage(message: String, senderId: String, receiverId: String, context: Context){
+        val message = Message(message,senderId,receiverId)
+        messagesDbRef.push().setValue(message).addOnCompleteListener{task: Task<Void> ->
+            if(task.isSuccessful){
+                Toast.makeText(context, "poruka je u bazi", Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(context, "nije u bazi", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     fun loginUser(email: String, password: String, context: Context){

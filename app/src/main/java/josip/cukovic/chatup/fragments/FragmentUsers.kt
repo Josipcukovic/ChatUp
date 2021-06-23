@@ -4,12 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import josip.cukovic.chatup.R
+import josip.cukovic.chatup.activities.AuthActivity
 import josip.cukovic.chatup.adapters.UsersRecyclerAdapter
 import josip.cukovic.chatup.databinding.FragmentUsersBinding
+import josip.cukovic.chatup.persistence.Firebase
 import josip.cukovic.chatup.persistence.UserRepository
 
 class FragmentUsers: Fragment() {
@@ -33,5 +36,11 @@ class FragmentUsers: Fragment() {
         userFragmentBinding.userRecycler.adapter = UsersRecyclerAdapter(UserRepository.users)
     }
 
+    /*override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        if(isVisibleToUser){
+
+        }
+    }*/
 
 }
