@@ -5,20 +5,20 @@ import android.media.SoundPool
 import android.os.Build
 
 class SoundPool {
-    private lateinit var mSoundPool: SoundPool
-    var mSoundMap: HashMap<Int, Int> = HashMap()
+    private lateinit var soundPool: SoundPool
+    var soundMap: HashMap<Int, Int> = HashMap()
 
     fun loadSounds(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mSoundPool = SoundPool.Builder().setMaxStreams(10).build()
+            soundPool = SoundPool.Builder().setMaxStreams(10).build()
         } else {
-            mSoundPool = SoundPool(1, AudioManager.STREAM_MUSIC, 0)
+            soundPool = SoundPool(1, AudioManager.STREAM_MUSIC, 0)
        }
-        mSoundMap[R.raw.mesagesent] = mSoundPool.load(ChatUpApplication.ApplicationContext, R.raw.mesagesent, 1)
+        soundMap[R.raw.mesagesent] = soundPool.load(ChatUpApplication.ApplicationContext, R.raw.mesagesent, 1)
     }
 
     fun playSound(selectedSound: Int) {
-        val soundID = mSoundMap[selectedSound] ?: 0
-        mSoundPool.play(soundID, 1f, 1f, 1, 0, 1f)
+        val soundID = soundMap[selectedSound] ?: 0
+        soundPool.play(soundID, 1f, 1f, 1, 0, 1f)
     }
 }

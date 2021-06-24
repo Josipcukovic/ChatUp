@@ -4,7 +4,6 @@ package josip.cukovic.chatup.activities
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import josip.cukovic.chatup.ChatUpApplication
 import josip.cukovic.chatup.databinding.ActivityRegisterBinding
 import josip.cukovic.chatup.persistence.Firebase
 
