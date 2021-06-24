@@ -5,6 +5,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import josip.cukovic.chatup.R
+import josip.cukovic.chatup.SoundPool
 import josip.cukovic.chatup.databinding.ActivityMainBinding
 import josip.cukovic.chatup.manager.PreferenceManager
 import josip.cukovic.chatup.persistence.Firebase
