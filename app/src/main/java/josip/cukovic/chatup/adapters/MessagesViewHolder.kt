@@ -31,7 +31,6 @@ class MessagesViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
                 itemView.findViewById<ImageView>(R.id.myPictureIv).visibility= View.GONE
             }
 
-
     }
 
 }

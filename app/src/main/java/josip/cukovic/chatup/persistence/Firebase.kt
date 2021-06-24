@@ -1,5 +1,6 @@
 package josip.cukovic.chatup.persistence
 
+import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
@@ -10,8 +11,10 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.database.*
+import com.google.firebase.database.ktx.getValue
 import josip.cukovic.chatup.ChatUpApplication
 import josip.cukovic.chatup.activities.AuthActivity
+import josip.cukovic.chatup.adapters.FragmentAdapter
 import josip.cukovic.chatup.adapters.MessagesRecyclerAdapter
 import josip.cukovic.chatup.adapters.UsersRecyclerAdapter
 import josip.cukovic.chatup.manager.PreferenceManager
@@ -65,24 +68,32 @@ object Firebase {
 
 
     fun loadMessages(adapter: MessagesRecyclerAdapter, recyclerView: RecyclerView){
+
         childEventListenerMessages = object: ChildEventListener{
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
 
-                val userData =  snapshot.getValue() as HashMap<String, String>
-                //val poruka =  Message(userData.get("textMessage").toString(), userData.get("senderId").toString(), userData.get("receiverId").toString())
+                val messageData =  snapshot.getValue() as HashMap<String, String>
 
 ///kasnije refaktoriraj
-                val recieverId = userData.get("receiverId").toString()
-                val senderId = userData.get("senderId").toString()
+                val recieverId = messageData.get("receiverId").toString()
+                val senderId = messageData.get("senderId").toString()
                 val chosenUserId = UserRepository.userId
                 val currentUser = getCurrentUserId()
 ///provjeri jel smije vidjet poruku uopce
                 if((recieverId == currentUser && senderId == chosenUserId) || (recieverId == chosenUserId && senderId == currentUser )){
-                    val poruka =  Message(userData.get("textMessage").toString(), userData.get("senderId").toString(), userData.get("receiverId").toString())
+                    val poruka =  Message(messageData.get("textMessage").toString(), messageData.get("senderId").toString(), messageData.get("receiverId").toString(),messageData["messageSeen"].toString())
+
+                    ///update seen
+                    if ((chosenUserId == senderId) && (currentUser == recieverId) && (poruka.messageSeen == "false")) {
+                        messagesDbRef.child(snapshot.key.toString()).child("messageSeen").setValue("true")
+                    }
+
                     MessageRepository.add(poruka)
                     adapter.dataAdded(MessageRepository.messages)
                     recyclerView.scrollToPosition(adapter.itemCount-1)
                 }
+
+
 
 
             }
@@ -108,6 +119,31 @@ object Firebase {
 
     }
 
+    fun updateUnreadMessage() {
+
+        messagesDbRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+
+                val messageData = postSnapshot.getValue() as HashMap<String, String>
+
+                    val recieverId = messageData.get("receiverId").toString()
+                    val senderId = messageData.get("senderId").toString()
+                    val chosenUserId = UserRepository.userId
+                    val currentUser = getCurrentUserId()
+
+                    if((currentUser == recieverId) && (messageData["messageSeen"].toString() == "false") && chosenUserId != senderId){
+                        MessageRepository.unread++
+                    }
+
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Toast.makeText(ChatUpApplication.ApplicationContext, "nisi dohvatio poruke", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
 
 
   fun createUser(email: String, password: String, userName: String){
@@ -157,9 +193,10 @@ object Firebase {
                 }
     }
 
-    fun saveMessage(message: String, senderId: String, receiverId: String){
+    fun saveMessage(message: String, senderId: String, receiverId: String, isSeen:String){
         val context = ChatUpApplication.ApplicationContext
-        val message = Message(message,senderId,receiverId)
+        val message = Message(message,senderId,receiverId, isSeen)
+
         messagesDbRef.push().setValue(message).addOnCompleteListener{task: Task<Void> ->
             if(task.isSuccessful){
                 Toast.makeText(context, "poruka je u bazi", Toast.LENGTH_SHORT).show()

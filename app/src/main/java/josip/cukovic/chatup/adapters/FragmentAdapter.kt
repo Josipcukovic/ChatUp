@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import josip.cukovic.chatup.fragments.FragmentChat
 import josip.cukovic.chatup.fragments.FragmentUsers
+import josip.cukovic.chatup.persistence.MessageRepository
 
 class FragmentAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
 
@@ -12,7 +13,7 @@ class FragmentAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(f
             FragmentUsers.newInstance(),
             FragmentChat.newInstance()
     )
-    val titles = arrayOf("Users", "ToBeDecided")
+    val titles = arrayOf("Users", "Unread messages")
 
     override fun getCount(): Int {
        return fragments.size
@@ -25,4 +26,6 @@ class FragmentAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(f
     override fun getPageTitle(position: Int): CharSequence? {
         return titles[position]
     }
+
+
 }

@@ -48,7 +48,7 @@ class ChatActivity : AppCompatActivity() {
                 val sender = Firebase.getCurrentUserId().toString()
                 val receiver = userId
                 sound.playSound(R.raw.mesagesent)
-                Firebase.saveMessage(poruka,sender,receiver)
+                Firebase.saveMessage(poruka,sender,receiver,"false")
             }else{
                 Toast.makeText(this, "You can't send empty message", Toast.LENGTH_SHORT).show()
             }

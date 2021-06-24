@@ -1,5 +1,6 @@
 package josip.cukovic.chatup.activities
 
+import android.app.Application
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,16 +8,20 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.viewpager.widget.ViewPager
+import josip.cukovic.chatup.ChatUpApplication
 import josip.cukovic.chatup.R
 import josip.cukovic.chatup.adapters.FragmentAdapter
 import josip.cukovic.chatup.databinding.ActivityAuthBinding
 import josip.cukovic.chatup.persistence.Firebase
+import josip.cukovic.chatup.persistence.MessageRepository
 import josip.cukovic.chatup.persistence.UserRepository
 
 
 class AuthActivity : AppCompatActivity() {
     private lateinit var authBinding: ActivityAuthBinding
     private lateinit var viewPager: ViewPager
+    private var adapter = FragmentAdapter(supportFragmentManager)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         authBinding = ActivityAuthBinding.inflate(layoutInflater)
@@ -24,22 +29,24 @@ class AuthActivity : AppCompatActivity() {
         setupUi()
     }
 
+
     private fun setupUi() {
         viewPager = authBinding.viewPager
-        viewPager.adapter = FragmentAdapter(supportFragmentManager)
+        adapter = FragmentAdapter(supportFragmentManager)
+        viewPager.adapter = adapter
         authBinding.tabLayout.setupWithViewPager(viewPager)
+        Firebase.updateUnreadMessage()
 
-        /*viewPager.addOnPageChangeListener(object: ViewPager.OnPageChangeListener{
+        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
 
             }
 
             override fun onPageSelected(position: Int) {
-                if(position == 0){
-                    ///refreshaj podatke koji se prikazuju
-                    val adapter = findViewById<RecyclerView>(R.id.userRecycler).adapter as UsersRecyclerAdapter
-                    adapter.dataAdded(UserRepository.users)
-                    findViewById<RecyclerView>(R.id.userRecycler).scrollToPosition(adapter.itemCount-1)
+
+                if (position == 1) {
+                 Firebase.updateUnreadMessage()
+                    MessageRepository.unread = 0
                 }
             }
 
@@ -47,10 +54,12 @@ class AuthActivity : AppCompatActivity() {
 
             }
 
-        })*/
+        })
 
 
     }
+
+
     override fun onStop() {
         super.onStop()
         UserRepository.clearThemAll()

@@ -36,6 +36,7 @@ class FragmentUsers: Fragment() {
         val recycler = userFragmentBinding.userRecycler
         val adapter = userFragmentBinding.userRecycler.adapter as UsersRecyclerAdapter
         Firebase.loadData(adapter,recycler)
+
     }
 
 
