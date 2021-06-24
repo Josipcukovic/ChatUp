@@ -10,11 +10,13 @@ import josip.cukovic.chatup.adapters.MessagesRecyclerAdapter
 import josip.cukovic.chatup.databinding.ActivityChatBinding
 import josip.cukovic.chatup.persistence.Firebase
 import josip.cukovic.chatup.persistence.MessageRepository
+import josip.cukovic.chatup.persistence.UserRepository
 
 
 class ChatActivity : AppCompatActivity() {
     private lateinit var chatBinding: ActivityChatBinding
     var userId: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         chatBinding = ActivityChatBinding.inflate(layoutInflater)
@@ -22,7 +24,7 @@ class ChatActivity : AppCompatActivity() {
 
         userId = intent.extras?.getString("id").toString()
         Toast.makeText(this, userId, Toast.LENGTH_SHORT).show()
-
+        UserRepository.userId = userId
         setupUi()
     }
 
@@ -32,8 +34,8 @@ class ChatActivity : AppCompatActivity() {
         chatBinding.sendMsgBtn.setOnClickListener{
 
             val poruka = chatBinding.inputMessageEt.text.toString().trim()
-            if(poruka.isNotEmpty()){
 
+            if(poruka.isNotEmpty()){
                 chatBinding.inputMessageEt.text.clear()
                 val sender = Firebase.getCurrentUserId().toString()
                 val receiver = userId

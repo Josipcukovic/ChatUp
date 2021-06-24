@@ -67,10 +67,22 @@ object Firebase {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
 
                 val userData =  snapshot.getValue() as HashMap<String, String>
-                val poruka =  Message(userData.get("textMessage").toString(), userData.get("senderId").toString(), userData.get("receiverId").toString())
-                MessageRepository.add(poruka)
-                adapter.dataAdded(MessageRepository.messages)
-                recyclerView.scrollToPosition(adapter.itemCount-1)
+                //val poruka =  Message(userData.get("textMessage").toString(), userData.get("senderId").toString(), userData.get("receiverId").toString())
+
+///kasnije refaktoriraj
+                val recieverId = userData.get("receiverId").toString()
+                val senderId = userData.get("senderId").toString()
+                val chosenUserId = UserRepository.userId
+                val currentUser = getCurrentUserId()
+///provjeri jel smije vidjet poruku uopce
+                if((recieverId == currentUser && senderId == chosenUserId) || (recieverId == chosenUserId && senderId == currentUser )){
+                    val poruka =  Message(userData.get("textMessage").toString(), userData.get("senderId").toString(), userData.get("receiverId").toString())
+                    MessageRepository.add(poruka)
+                    adapter.dataAdded(MessageRepository.messages)
+                    recyclerView.scrollToPosition(adapter.itemCount-1)
+                }
+
+
             }
 
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
