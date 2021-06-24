@@ -29,7 +29,10 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private fun setupUi() {
-        chatBinding.messageRecycler.layoutManager = LinearLayoutManager(this,RecyclerView.VERTICAL,false)
+        val layoutManager = LinearLayoutManager(this,RecyclerView.VERTICAL,false)
+        layoutManager.stackFromEnd = true
+        chatBinding.messageRecycler.layoutManager = layoutManager
+
         displayData()
         chatBinding.sendMsgBtn.setOnClickListener{
 
@@ -39,7 +42,7 @@ class ChatActivity : AppCompatActivity() {
                 chatBinding.inputMessageEt.text.clear()
                 val sender = Firebase.getCurrentUserId().toString()
                 val receiver = userId
-                Firebase.saveMessage(poruka,sender,receiver,this)
+                Firebase.saveMessage(poruka,sender,receiver)
             }else{
                 Toast.makeText(this, "You can't send empty message", Toast.LENGTH_SHORT).show()
             }

@@ -11,6 +11,7 @@ import josip.cukovic.chatup.R
 import josip.cukovic.chatup.adapters.FragmentAdapter
 import josip.cukovic.chatup.databinding.ActivityAuthBinding
 import josip.cukovic.chatup.persistence.Firebase
+import josip.cukovic.chatup.persistence.UserRepository
 
 
 class AuthActivity : AppCompatActivity() {
@@ -49,6 +50,10 @@ class AuthActivity : AppCompatActivity() {
         })*/
 
 
+    }
+    override fun onStop() {
+        super.onStop()
+        UserRepository.clearThemAll()
     }
 
 ///menu opcije

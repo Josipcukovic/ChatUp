@@ -12,7 +12,7 @@ class FragmentAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(f
             FragmentUsers.newInstance(),
             FragmentChat.newInstance()
     )
-    val titles = arrayOf("Users", "Chat")
+    val titles = arrayOf("Users", "ToBeDecided")
 
     override fun getCount(): Int {
        return fragments.size

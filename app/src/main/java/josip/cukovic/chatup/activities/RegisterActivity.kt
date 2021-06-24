@@ -4,6 +4,7 @@ package josip.cukovic.chatup.activities
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import josip.cukovic.chatup.ChatUpApplication
 import josip.cukovic.chatup.databinding.ActivityRegisterBinding
 import josip.cukovic.chatup.persistence.Firebase
 
@@ -29,8 +30,8 @@ class RegisterActivity : AppCompatActivity() {
                 Toast.makeText(this, "Please fill in all the fields", Toast.LENGTH_SHORT).show()
             }else{
                 val userName = name + " " + surname
-                Toast.makeText(this, "Your profile is being created", Toast.LENGTH_LONG).show()
-                Firebase.createUser(email, password, userName, applicationContext)
+
+                Firebase.createUser(email, password, userName)
             }
         }
 

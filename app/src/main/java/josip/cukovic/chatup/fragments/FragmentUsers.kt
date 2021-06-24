@@ -38,6 +38,7 @@ class FragmentUsers: Fragment() {
         Firebase.loadData(adapter,recycler)
     }
 
+
     /*override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
         if(isVisibleToUser){

@@ -4,7 +4,9 @@ package josip.cukovic.chatup.activities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import josip.cukovic.chatup.ChatUpApplication
 import josip.cukovic.chatup.databinding.ActivityLoginBinding
+import josip.cukovic.chatup.manager.PreferenceManager
 import josip.cukovic.chatup.persistence.Firebase
 
 
@@ -25,7 +27,7 @@ class LoginActivity : AppCompatActivity() {
             val password = loginBinding.etPassword.text.toString().trim()
 
             if(email.isNotEmpty() && password.isNotEmpty()){
-                Firebase.loginUser(email,password,applicationContext)
+                Firebase.loginUser(email,password)
             }else{
                 Toast.makeText(this, "Please fill in all the fields", Toast.LENGTH_SHORT).show()
             }

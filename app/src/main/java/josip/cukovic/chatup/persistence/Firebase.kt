@@ -10,9 +10,11 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.database.*
+import josip.cukovic.chatup.ChatUpApplication
 import josip.cukovic.chatup.activities.AuthActivity
 import josip.cukovic.chatup.adapters.MessagesRecyclerAdapter
 import josip.cukovic.chatup.adapters.UsersRecyclerAdapter
+import josip.cukovic.chatup.manager.PreferenceManager
 import josip.cukovic.chatup.model.Message
 import josip.cukovic.chatup.model.User
 
@@ -108,14 +110,17 @@ object Firebase {
 
 
 
-  fun createUser(email: String, password: String, userName: String, context: Context){
-
+  fun createUser(email: String, password: String, userName: String){
+      val context = ChatUpApplication.ApplicationContext
       authFirebase.createUserWithEmailAndPassword(email, password)
               .addOnCompleteListener{ task: Task<AuthResult> ->
                   if(task.isSuccessful){
+                      Toast.makeText(context, "Your profile is being created", Toast.LENGTH_LONG).show()
+                      PreferenceManager().saveEmail(email)
+                      PreferenceManager().savePassword(password)
                      addUserToDatabase(email, userName, context)
                   }else{
-                      Toast.makeText(context, "imamo Problem", Toast.LENGTH_SHORT).show()
+                      Toast.makeText(context, task.exception!!.message.toString(), Toast.LENGTH_SHORT).show()
                   }
               }
   }
@@ -137,8 +142,6 @@ object Firebase {
                         userNode.setValue(user).addOnCompleteListener{ task: Task<Void> ->
 
                             if(task.isSuccessful){
-                                Toast.makeText(context, "hurraaaj", Toast.LENGTH_SHORT).show()
-
                                 val intent = Intent(context, AuthActivity::class.java)
                                 ///zatvori sve prijasnje activity-e
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -154,7 +157,8 @@ object Firebase {
                 }
     }
 
-    fun saveMessage(message: String, senderId: String, receiverId: String, context: Context){
+    fun saveMessage(message: String, senderId: String, receiverId: String){
+        val context = ChatUpApplication.ApplicationContext
         val message = Message(message,senderId,receiverId)
         messagesDbRef.push().setValue(message).addOnCompleteListener{task: Task<Void> ->
             if(task.isSuccessful){
@@ -165,16 +169,21 @@ object Firebase {
         }
     }
 
-    fun loginUser(email: String, password: String, context: Context){
+    fun loginUser(email: String, password: String){
+         val context = ChatUpApplication.ApplicationContext
         authFirebase.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener{ task: Task<AuthResult> ->
                 if (task.isSuccessful){
+                    ///spremi podatke
+                    PreferenceManager().saveEmail(email)
+                    PreferenceManager().savePassword(password)
+
                     val intent = Intent(context, AuthActivity::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                     startActivity(context, intent, null)
 
                 }else{
-                    Toast.makeText(context, task.exception.toString(), Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, task.exception!!.message.toString(), Toast.LENGTH_LONG).show()
 
                 }
             }
@@ -183,6 +192,8 @@ object Firebase {
     fun logOut(){
         UserRepository.clearThemAll()
         usersDbRef.removeEventListener(childEventListenerData as ChildEventListener)
+        PreferenceManager().saveEmail("default")
+        PreferenceManager().savePassword("default")
         authFirebase.signOut()
     }
 

@@ -6,7 +6,9 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import josip.cukovic.chatup.ChatUpApplication
 import josip.cukovic.chatup.R
 import josip.cukovic.chatup.activities.ChatActivity
 import josip.cukovic.chatup.model.Message
