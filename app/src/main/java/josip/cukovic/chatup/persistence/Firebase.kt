@@ -1,6 +1,6 @@
 package josip.cukovic.chatup.persistence
 
-import android.app.Application
+
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
@@ -11,10 +11,8 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.database.*
-import com.google.firebase.database.ktx.getValue
 import josip.cukovic.chatup.ChatUpApplication
 import josip.cukovic.chatup.activities.AuthActivity
-import josip.cukovic.chatup.adapters.FragmentAdapter
 import josip.cukovic.chatup.adapters.MessagesRecyclerAdapter
 import josip.cukovic.chatup.adapters.UsersRecyclerAdapter
 import josip.cukovic.chatup.manager.PreferenceManager
@@ -24,6 +22,7 @@ import josip.cukovic.chatup.model.User
 
 
 object Firebase {
+
     private var authFirebase = FirebaseAuth.getInstance()
     private var db = FirebaseDatabase.getInstance()
     private val usersDbRef = db.getReference("Users")
@@ -125,15 +124,16 @@ object Firebase {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (postSnapshot in dataSnapshot.children) {
 
-                val messageData = postSnapshot.getValue() as HashMap<String, String>
+                    val messageData = postSnapshot.getValue() as HashMap<String, String>
 
                     val recieverId = messageData.get("receiverId").toString()
                     val senderId = messageData.get("senderId").toString()
                     val chosenUserId = UserRepository.userId
                     val currentUser = getCurrentUserId()
 
-                    if((currentUser == recieverId) && (messageData["messageSeen"].toString() == "false") && chosenUserId != senderId){
+                    if ((currentUser == recieverId) && (messageData["messageSeen"].toString() == "false") && chosenUserId != senderId) {
                         MessageRepository.unread++
+                        Toast.makeText(ChatUpApplication.ApplicationContext, messageData["textMessage"], Toast.LENGTH_SHORT).show()
                     }
 
                 }
