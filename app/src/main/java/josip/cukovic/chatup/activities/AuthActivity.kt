@@ -1,16 +1,18 @@
 package josip.cukovic.chatup.activities
 
-import android.app.Application
+
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import josip.cukovic.chatup.ChatUpApplication
 import josip.cukovic.chatup.R
 import josip.cukovic.chatup.adapters.FragmentAdapter
+import josip.cukovic.chatup.adapters.UnreadMessagesRecyclerAdapter
 import josip.cukovic.chatup.databinding.ActivityAuthBinding
 import josip.cukovic.chatup.persistence.Firebase
 import josip.cukovic.chatup.persistence.MessageRepository
@@ -35,30 +37,23 @@ class AuthActivity : AppCompatActivity() {
         adapter = FragmentAdapter(supportFragmentManager)
         viewPager.adapter = adapter
         authBinding.tabLayout.setupWithViewPager(viewPager)
-        Firebase.updateUnreadMessage()
+
 
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-
-            }
-
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
             override fun onPageSelected(position: Int) {
 
                 if (position == 1) {
-                 Firebase.updateUnreadMessage()
-                    MessageRepository.unread = 0
+                    Toast.makeText(ChatUpApplication.ApplicationContext, "authActivity", Toast.LENGTH_SHORT).show()
+                    val recycler = findViewById<RecyclerView>(R.id.unreadMessagesRecycler)
+                   val adapter = recycler.adapter as UnreadMessagesRecyclerAdapter
+                    adapter.dataChanged(MessageRepository.unreadMessages)
                 }
             }
 
-            override fun onPageScrollStateChanged(state: Int) {
-
-            }
-
+            override fun onPageScrollStateChanged(state: Int) {}
         })
-
-
     }
-
 
     override fun onStop() {
         super.onStop()
@@ -86,4 +81,5 @@ class AuthActivity : AppCompatActivity() {
         }
         return true
     }
+
 }

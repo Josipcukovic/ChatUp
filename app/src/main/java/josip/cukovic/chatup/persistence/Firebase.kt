@@ -14,12 +14,11 @@ import com.google.firebase.database.*
 import josip.cukovic.chatup.ChatUpApplication
 import josip.cukovic.chatup.activities.AuthActivity
 import josip.cukovic.chatup.adapters.MessagesRecyclerAdapter
+import josip.cukovic.chatup.adapters.UnreadMessagesRecyclerAdapter
 import josip.cukovic.chatup.adapters.UsersRecyclerAdapter
 import josip.cukovic.chatup.manager.PreferenceManager
 import josip.cukovic.chatup.model.Message
 import josip.cukovic.chatup.model.User
-
-
 
 object Firebase {
 
@@ -29,6 +28,7 @@ object Firebase {
     private val messagesDbRef = db.getReference("Messages")
     private var childEventListenerData: ChildEventListener? = null
     private var childEventListenerMessages: ChildEventListener? = null
+
 
 ///pokusaj dohvacanja podataka
     fun loadData(adapter: UsersRecyclerAdapter,recyclerView: RecyclerView){
@@ -72,7 +72,6 @@ object Firebase {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
 
                 val messageData =  snapshot.getValue() as HashMap<String, String>
-
 ///kasnije refaktoriraj
                 val recieverId = messageData.get("receiverId").toString()
                 val senderId = messageData.get("senderId").toString()
@@ -92,38 +91,23 @@ object Firebase {
                     recyclerView.scrollToPosition(adapter.itemCount-1)
                 }
 
-
-
-
             }
 
-            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-
-            }
-
-            override fun onChildRemoved(snapshot: DataSnapshot) {
-
-            }
-
-            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-
-            }
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onChildRemoved(snapshot: DataSnapshot) {}
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onCancelled(error: DatabaseError) {}
 
         }
         messagesDbRef.addChildEventListener(childEventListenerMessages as ChildEventListener)
-
     }
 
-    fun updateUnreadMessage() {
+    fun updateUnreadMessage(adapter: UnreadMessagesRecyclerAdapter) {
 
         messagesDbRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
+                MessageRepository.removeAllUnreadMessages()
                 for (postSnapshot in dataSnapshot.children) {
-
                     val messageData = postSnapshot.getValue() as HashMap<String, String>
 
                     val recieverId = messageData.get("receiverId").toString()
@@ -132,10 +116,11 @@ object Firebase {
                     val currentUser = getCurrentUserId()
 
                     if ((currentUser == recieverId) && (messageData["messageSeen"].toString() == "false") && chosenUserId != senderId) {
-                        MessageRepository.unread++
-                        Toast.makeText(ChatUpApplication.ApplicationContext, messageData["textMessage"], Toast.LENGTH_SHORT).show()
-                    }
+                        val message = Message(messageData["textMessage"].toString(), messageData["senderId"].toString(), messageData["receiverId"].toString(), messageData["messageSeen"].toString())
+                        MessageRepository.addUnreadMessage(message)
 
+                    }
+                    adapter.dataChanged(MessageRepository.unreadMessages)
                 }
             }
 
@@ -145,9 +130,10 @@ object Firebase {
         })
     }
 
-
   fun createUser(email: String, password: String, userName: String){
+
       val context = ChatUpApplication.ApplicationContext
+
       authFirebase.createUserWithEmailAndPassword(email, password)
               .addOnCompleteListener{ task: Task<AuthResult> ->
                   if(task.isSuccessful){
@@ -159,6 +145,7 @@ object Firebase {
                       Toast.makeText(context, task.exception!!.message.toString(), Toast.LENGTH_SHORT).show()
                   }
               }
+
   }
 
     private fun addUserToDatabase(email: String, userName: String, context: Context){
