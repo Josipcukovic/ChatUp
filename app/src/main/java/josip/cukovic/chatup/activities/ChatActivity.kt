@@ -19,6 +19,10 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var chatBinding: ActivityChatBinding
     var userId: String = ""
     private val sound = SoundPool()
+    companion object{
+        lateinit var recyclerView: RecyclerView
+       lateinit var adapter: MessagesRecyclerAdapter
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +33,6 @@ class ChatActivity : AppCompatActivity() {
         supportActionBar!!.title = userName
 
         userId = intent.extras?.getString("id").toString()
-        Toast.makeText(this, userId, Toast.LENGTH_SHORT).show()
 
         UserRepository.userId = userId
         setupUi()
@@ -65,8 +68,10 @@ class ChatActivity : AppCompatActivity() {
         chatBinding.messageRecycler.adapter = MessagesRecyclerAdapter(MessageRepository.messages)
         val recycler = chatBinding.messageRecycler
         val adapter = recycler.adapter as MessagesRecyclerAdapter
+        ChatActivity.recyclerView = recycler
+        ChatActivity.adapter = adapter
 
-        Firebase.loadMessages(adapter,recycler)
+        Firebase.loadMessages()
     }
 
     override fun onPause() {

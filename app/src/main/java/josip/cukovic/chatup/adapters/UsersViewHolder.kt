@@ -18,12 +18,10 @@ class UsersViewHolder(itemView: View, private val context: Context): RecyclerVie
         itemView.findViewById<TextView>(R.id.tvEmail).text ="User email:" + user.email
 
         itemView.setOnClickListener{
-
             val chatIntent = Intent(context,ChatActivity::class.java)
             chatIntent.putExtra("id",user.id)
             chatIntent.putExtra("name",user.name)
             context.startActivity(chatIntent)
-
         }
     }
 }

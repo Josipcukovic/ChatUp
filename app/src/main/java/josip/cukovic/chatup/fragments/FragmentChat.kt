@@ -20,29 +20,24 @@ class FragmentChat: Fragment() {
         fun newInstance(): FragmentChat{
             return FragmentChat()
         }
+        lateinit var adapter: UnreadMessagesRecyclerAdapter
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         fragmentChatBinding = FragmentChatBinding.inflate(inflater,container,false)
         fragmentChatBinding.unreadMessagesRecycler.layoutManager = LinearLayoutManager(context,RecyclerView.VERTICAL,false)
-
-
         setupUi()
-
         return fragmentChatBinding.root
     }
 
-    private fun getAdapter(): UnreadMessagesRecyclerAdapter{
-        val  recycler = fragmentChatBinding.unreadMessagesRecycler
-        val  adapter = recycler.adapter as UnreadMessagesRecyclerAdapter
-        return adapter
-    }
+
 
     private fun setupUi() {
         fragmentChatBinding.unreadMessagesRecycler.adapter = UnreadMessagesRecyclerAdapter(MessageRepository.unreadMessages)
+        val  recycler = fragmentChatBinding.unreadMessagesRecycler
+        adapter = recycler.adapter as UnreadMessagesRecyclerAdapter
 
-        val adapter = getAdapter()
-        Firebase.updateUnreadMessage(adapter)
+        Firebase.updateUnreadMessage()
     }
 
 
@@ -55,7 +50,6 @@ class FragmentChat: Fragment() {
 
     override fun onResume() {
         super.onResume()
-        val adapter = getAdapter()
         UserRepository.userId = null
         adapter.dataChanged(MessageRepository.unreadMessages)
     }

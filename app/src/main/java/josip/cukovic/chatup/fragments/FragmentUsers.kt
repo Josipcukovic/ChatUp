@@ -19,6 +19,8 @@ class FragmentUsers: Fragment() {
         fun newInstance(): FragmentUsers{
             return FragmentUsers()
         }
+
+        lateinit var adapter: UsersRecyclerAdapter
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -32,7 +34,7 @@ class FragmentUsers: Fragment() {
 
     private fun displayData() {
         userFragmentBinding.userRecycler.adapter = UsersRecyclerAdapter(UserRepository.users)
-
+        adapter = userFragmentBinding.userRecycler.adapter as UsersRecyclerAdapter
         /*val recycler = userFragmentBinding.userRecycler
         val adapter = userFragmentBinding.userRecycler.adapter as UsersRecyclerAdapter
         Firebase.loadData(adapter,recycler)*/
@@ -46,9 +48,7 @@ class FragmentUsers: Fragment() {
 
     override fun onResume() {
         super.onResume()
-        val recycler = userFragmentBinding.userRecycler
-        val adapter = userFragmentBinding.userRecycler.adapter as UsersRecyclerAdapter
-        Firebase.loadData(adapter,recycler)
+        Firebase.loadUsers()
     }
 
 

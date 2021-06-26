@@ -13,9 +13,13 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.database.*
 import josip.cukovic.chatup.ChatUpApplication
 import josip.cukovic.chatup.activities.AuthActivity
+import josip.cukovic.chatup.activities.ChatActivity
 import josip.cukovic.chatup.adapters.MessagesRecyclerAdapter
 import josip.cukovic.chatup.adapters.UnreadMessagesRecyclerAdapter
 import josip.cukovic.chatup.adapters.UsersRecyclerAdapter
+import josip.cukovic.chatup.databinding.ActivityChatBinding
+import josip.cukovic.chatup.fragments.FragmentChat
+import josip.cukovic.chatup.fragments.FragmentUsers
 import josip.cukovic.chatup.manager.PreferenceManager
 import josip.cukovic.chatup.model.Message
 import josip.cukovic.chatup.model.User
@@ -31,7 +35,7 @@ object Firebase {
 
 
 ///pokusaj dohvacanja podataka
-    fun loadData(adapter: UsersRecyclerAdapter,recyclerView: RecyclerView){
+    fun loadUsers(){
     childEventListenerData = object: ChildEventListener{
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                // val userId = snapshot.key
@@ -39,25 +43,14 @@ object Firebase {
 
                     val korisnik =  User(userData.get("name").toString(), userData.get("email").toString(), userData.get("id").toString())
                     UserRepository.add(korisnik)
-                    adapter.dataAdded(UserRepository.users)
+                    FragmentUsers.adapter.dataAdded(UserRepository.users)
 
             }
 
-            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-
-            }
-
-            override fun onChildRemoved(snapshot: DataSnapshot) {
-
-            }
-
-            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-
-            }
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onChildRemoved(snapshot: DataSnapshot) {}
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onCancelled(error: DatabaseError) {}
 
         }
          usersDbRef.addChildEventListener(childEventListenerData as ChildEventListener)
@@ -65,8 +58,7 @@ object Firebase {
     }
 
 
-    fun loadMessages(adapter: MessagesRecyclerAdapter, recyclerView: RecyclerView){
-
+    fun loadMessages(){
         childEventListenerMessages = object: ChildEventListener{
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
 
@@ -86,8 +78,8 @@ object Firebase {
                     }
 
                     MessageRepository.add(poruka)
-                    adapter.dataAdded(MessageRepository.messages)
-                    recyclerView.scrollToPosition(adapter.itemCount-1)
+                    ChatActivity.adapter.dataAdded(MessageRepository.messages)
+                    ChatActivity.recyclerView.scrollToPosition(ChatActivity.adapter.itemCount-1)
                 }
 
             }
@@ -101,7 +93,7 @@ object Firebase {
         messagesDbRef.addChildEventListener(childEventListenerMessages as ChildEventListener)
     }
 
-    fun updateUnreadMessage(adapter: UnreadMessagesRecyclerAdapter) {
+    fun updateUnreadMessage() {
 
         messagesDbRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -119,7 +111,7 @@ object Firebase {
                         MessageRepository.addUnreadMessage(message)
 
                     }
-                    adapter.dataChanged(MessageRepository.unreadMessages)
+                    FragmentChat.adapter.dataChanged(MessageRepository.unreadMessages)
                 }
             }
 
@@ -180,14 +172,11 @@ object Firebase {
     }
 
     fun saveMessage(message: String, senderId: String, receiverId: String, isSeen:String){
-        val context = ChatUpApplication.ApplicationContext
-        val message = Message(message,senderId,receiverId, isSeen)
 
+        val message = Message(message,senderId,receiverId, isSeen)
         messagesDbRef.push().setValue(message).addOnCompleteListener{task: Task<Void> ->
             if(task.isSuccessful){
-                Toast.makeText(context, "poruka je u bazi", Toast.LENGTH_SHORT).show()
-            }else{
-                Toast.makeText(context, "nije u bazi", Toast.LENGTH_SHORT).show()
+                ///message is in base
             }
         }
     }
