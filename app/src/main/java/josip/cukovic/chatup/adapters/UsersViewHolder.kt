@@ -21,6 +21,7 @@ class UsersViewHolder(itemView: View, private val context: Context): RecyclerVie
 
             val chatIntent = Intent(context,ChatActivity::class.java)
             chatIntent.putExtra("id",user.id)
+            chatIntent.putExtra("name",user.name)
             context.startActivity(chatIntent)
 
         }

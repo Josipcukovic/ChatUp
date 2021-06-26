@@ -33,10 +33,22 @@ class FragmentUsers: Fragment() {
     private fun displayData() {
         userFragmentBinding.userRecycler.adapter = UsersRecyclerAdapter(UserRepository.users)
 
+        /*val recycler = userFragmentBinding.userRecycler
+        val adapter = userFragmentBinding.userRecycler.adapter as UsersRecyclerAdapter
+        Firebase.loadData(adapter,recycler)*/
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Firebase.unsubscribeUserListener()
+    }
+
+    override fun onResume() {
+        super.onResume()
         val recycler = userFragmentBinding.userRecycler
         val adapter = userFragmentBinding.userRecycler.adapter as UsersRecyclerAdapter
         Firebase.loadData(adapter,recycler)
-
     }
 
 

@@ -19,16 +19,25 @@ class MessagesViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
     fun bind(message: Message){
 
-        itemView.findViewById<TextView>(R.id.mesageTv).text = message.textMessage
+
 
             if(Firebase.getCurrentUserId().equals(message.senderId)){
-                itemView.setBackgroundColor(Color.rgb(200 , 200, 200))
-                itemView.findViewById<ImageView>(R.id.userPictureIv).visibility = View.GONE
-                itemView.findViewById<ImageView>(R.id.myPictureIv).visibility= View.VISIBLE
+               // itemView.setBackgroundColor(Color.rgb(200 , 200, 200))
+                itemView.findViewById<TextView>(R.id.messageMyTv).text = message.textMessage
+                itemView.findViewById<TextView>(R.id.messageTv).visibility = View.GONE
+                itemView.findViewById<TextView>(R.id.messageMyTv).visibility= View.VISIBLE
+
+
+                /*itemView.findViewById<ImageView>(R.id.userPictureIv).visibility = View.GONE
+                itemView.findViewById<ImageView>(R.id.myPictureIv).visibility= View.VISIBLE*/
             }else{
-                itemView.setBackgroundColor(Color.rgb(224, 224, 224))
-                itemView.findViewById<ImageView>(R.id.userPictureIv).visibility = View.VISIBLE
-                itemView.findViewById<ImageView>(R.id.myPictureIv).visibility= View.GONE
+                //itemView.setBackgroundColor(Color.rgb(224, 224, 224))
+                itemView.findViewById<TextView>(R.id.messageTv).text = message.textMessage
+                itemView.findViewById<TextView>(R.id.messageTv).visibility = View.VISIBLE
+                itemView.findViewById<TextView>(R.id.messageMyTv).visibility= View.GONE
+
+                /*itemView.findViewById<ImageView>(R.id.userPictureIv).visibility = View.VISIBLE
+                itemView.findViewById<ImageView>(R.id.myPictureIv).visibility= View.GONE*/
             }
 
     }

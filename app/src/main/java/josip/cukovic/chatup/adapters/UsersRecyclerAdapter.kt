@@ -28,11 +28,9 @@ class UsersRecyclerAdapter(users: MutableList<User>): RecyclerView.Adapter<Users
     }
 
     fun dataAdded(user: MutableList<User>){
-        val number = itemCount
         this.users.clear()
         this.users.addAll((user))
-        if(itemCount == number) return
-        notifyItemInserted(itemCount - 1)
+        notifyDataSetChanged()
     }
 
 }

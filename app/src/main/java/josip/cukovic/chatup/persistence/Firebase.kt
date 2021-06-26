@@ -36,12 +36,11 @@ object Firebase {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                // val userId = snapshot.key
                 val userData =  snapshot.getValue() as HashMap<String, String>
-                //if(userId != getCurrentUserId()){
+
                     val korisnik =  User(userData.get("name").toString(), userData.get("email").toString(), userData.get("id").toString())
                     UserRepository.add(korisnik)
                     adapter.dataAdded(UserRepository.users)
-                    recyclerView.scrollToPosition(adapter.itemCount-1)
-               // }
+
             }
 
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
@@ -236,5 +235,10 @@ object Firebase {
     fun unsubscribeMessageListener(){
         MessageRepository.removeAllMessages()
         messagesDbRef.removeEventListener(childEventListenerMessages as ChildEventListener)
+    }
+
+    fun unsubscribeUserListener(){
+        UserRepository.clearThemAll()
+        usersDbRef.removeEventListener(childEventListenerData as ChildEventListener)
     }
 }

@@ -44,7 +44,6 @@ class AuthActivity : AppCompatActivity() {
             override fun onPageSelected(position: Int) {
 
                 if (position == 1) {
-                    Toast.makeText(ChatUpApplication.ApplicationContext, "authActivity", Toast.LENGTH_SHORT).show()
                     val recycler = findViewById<RecyclerView>(R.id.unreadMessagesRecycler)
                    val adapter = recycler.adapter as UnreadMessagesRecyclerAdapter
                     adapter.dataChanged(MessageRepository.unreadMessages)

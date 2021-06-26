@@ -25,6 +25,9 @@ class ChatActivity : AppCompatActivity() {
         chatBinding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(chatBinding.root)
 
+        val userName = intent.extras?.getString("name").toString()
+        supportActionBar!!.title = userName
+
         userId = intent.extras?.getString("id").toString()
         Toast.makeText(this, userId, Toast.LENGTH_SHORT).show()
 

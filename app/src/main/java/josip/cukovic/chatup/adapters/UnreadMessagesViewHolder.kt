@@ -19,13 +19,16 @@ class UnreadMessagesViewHolder(itemView: View,private val context: Context): Rec
             val ime = it.value.toString()
             itemView.findViewById<TextView>(R.id.tvName).text = ime
             itemView.findViewById<TextView>(R.id.tvUnreadMessage).text = message.textMessage
+
+            itemView.setOnClickListener{
+                val chatIntent = Intent(context, ChatActivity::class.java)
+                chatIntent.putExtra("id",message.senderId)
+                chatIntent.putExtra("name", ime)
+                context.startActivity(chatIntent)
+
+            }
         }
 
-        itemView.setOnClickListener{
-            val chatIntent = Intent(context, ChatActivity::class.java)
-            chatIntent.putExtra("id",message.senderId)
-            context.startActivity(chatIntent)
 
-        }
     }
 }

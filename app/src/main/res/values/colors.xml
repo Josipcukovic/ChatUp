@@ -8,4 +8,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#e0e0e0</color>
+    <color name="lighter_gray">#f2f2f2</color>
+    <color name ="msgMyColor">#FFC8C8C8</color>
 </resources>
