@@ -35,6 +35,7 @@
         android:id="@+id/loginBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:enabled="false"
         android:textSize="20sp"
         app:layout_constraintRight_toLeftOf="@id/rightGuideLine"
         app:layout_constraintLeft_toRightOf="@id/leftGuideLine"
@@ -46,6 +47,7 @@
     <Button
         android:id="@+id/registerBtn"
         android:layout_width="0dp"
+        android:enabled="false"
         android:textSize="20sp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"

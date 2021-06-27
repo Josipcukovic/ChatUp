@@ -26,6 +26,9 @@ class MainActivity : AppCompatActivity() {
 
         if((email != "default") && (password != "default") ){
             Firebase.loginUser(email,password)
+        }else{
+            binding.loginBtn.isEnabled = true
+            binding.registerBtn.isEnabled = true
         }
 
 

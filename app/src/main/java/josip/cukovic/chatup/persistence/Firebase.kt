@@ -1,7 +1,7 @@
 package josip.cukovic.chatup.persistence
 
 
-import android.content.Context
+
 import android.content.Intent
 import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
@@ -111,7 +111,7 @@ object Firebase {
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                Toast.makeText(ChatUpApplication.ApplicationContext, "nisi dohvatio poruke", Toast.LENGTH_SHORT).show()
+                Toast.makeText(ChatUpApplication.ApplicationContext, "Couldn't fetch messages", Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -157,11 +157,11 @@ object Firebase {
                                 startActivity(context, intent, null)
 
                             }else{
-                                Toast.makeText(context, "nije u bazi", Toast.LENGTH_SHORT).show()
+                                //user is not in database
                             }
                         }
                     }else{
-                        Toast.makeText(context, "nemas srece", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Error has occured", Toast.LENGTH_SHORT).show()
                     }
                 }
     }
