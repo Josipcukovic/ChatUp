@@ -12,6 +12,6 @@ object MessageRepository {
     fun removeAllUnreadMessages() = unreadMessages.clear()
 
 
-    fun add(message: Message) = messages.add(message)
+    fun addMessage(message: Message) = messages.add(message)
     fun removeAllMessages() = messages.clear()
 }

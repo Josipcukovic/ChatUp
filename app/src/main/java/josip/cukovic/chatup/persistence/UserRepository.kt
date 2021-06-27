@@ -8,5 +8,5 @@ object UserRepository {
     val users: MutableList<User> = mutableListOf()
 
     fun add(user: User) = users.add(user)
-    fun clearThemAll() = users.clear()
+    fun clearAllUsers() = users.clear()
 }

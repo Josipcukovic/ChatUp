@@ -9,7 +9,6 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
-import josip.cukovic.chatup.ChatUpApplication
 import josip.cukovic.chatup.R
 import josip.cukovic.chatup.adapters.FragmentAdapter
 import josip.cukovic.chatup.adapters.UnreadMessagesRecyclerAdapter
@@ -56,7 +55,7 @@ class AuthActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        UserRepository.clearThemAll()
+        UserRepository.clearAllUsers()
     }
 
 ///menu opcije

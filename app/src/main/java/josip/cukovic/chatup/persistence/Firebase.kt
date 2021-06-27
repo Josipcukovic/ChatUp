@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -14,10 +13,6 @@ import com.google.firebase.database.*
 import josip.cukovic.chatup.ChatUpApplication
 import josip.cukovic.chatup.activities.AuthActivity
 import josip.cukovic.chatup.activities.ChatActivity
-import josip.cukovic.chatup.adapters.MessagesRecyclerAdapter
-import josip.cukovic.chatup.adapters.UnreadMessagesRecyclerAdapter
-import josip.cukovic.chatup.adapters.UsersRecyclerAdapter
-import josip.cukovic.chatup.databinding.ActivityChatBinding
 import josip.cukovic.chatup.fragments.FragmentChat
 import josip.cukovic.chatup.fragments.FragmentUsers
 import josip.cukovic.chatup.manager.PreferenceManager
@@ -77,7 +72,7 @@ object Firebase {
                         messagesDbRef.child(snapshot.key.toString()).child("messageSeen").setValue("true")
                     }
 
-                    MessageRepository.add(poruka)
+                    MessageRepository.addMessage(poruka)
                     ChatActivity.adapter.dataAdded(MessageRepository.messages)
                     ChatActivity.recyclerView.scrollToPosition(ChatActivity.adapter.itemCount-1)
                 }
@@ -131,7 +126,7 @@ object Firebase {
                       Toast.makeText(context, "Your profile is being created", Toast.LENGTH_LONG).show()
                       PreferenceManager().saveEmail(email)
                       PreferenceManager().savePassword(password)
-                     addUserToDatabase(email, userName, context)
+                     addUserToDatabase(email, userName)
                   }else{
                       Toast.makeText(context, task.exception!!.message.toString(), Toast.LENGTH_SHORT).show()
                   }
@@ -139,8 +134,8 @@ object Firebase {
 
   }
 
-    private fun addUserToDatabase(email: String, userName: String, context: Context){
-
+    private fun addUserToDatabase(email: String, userName: String){
+        val context = ChatUpApplication.ApplicationContext
         val currentUser = authFirebase.currentUser
         val currentUserId = currentUser!!.uid
         val userNode = usersDbRef.child(currentUserId)
@@ -202,7 +197,7 @@ object Firebase {
     }
 
     fun logOut(){
-        UserRepository.clearThemAll()
+        UserRepository.clearAllUsers()
         usersDbRef.removeEventListener(childEventListenerData as ChildEventListener)
         PreferenceManager().saveEmail("default")
         PreferenceManager().savePassword("default")
@@ -227,7 +222,7 @@ object Firebase {
     }
 
     fun unsubscribeUserListener(){
-        UserRepository.clearThemAll()
+        UserRepository.clearAllUsers()
         usersDbRef.removeEventListener(childEventListenerData as ChildEventListener)
     }
 }
