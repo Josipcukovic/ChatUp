@@ -1,6 +1,6 @@
-package josip.cukovic.chatup.persistence
+package josip.cukovic.chatup.data
 
-import josip.cukovic.chatup.model.User
+import josip.cukovic.chatup.models.User
 
 
 object UserRepository {

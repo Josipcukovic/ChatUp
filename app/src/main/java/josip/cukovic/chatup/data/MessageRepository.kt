@@ -1,7 +1,7 @@
-package josip.cukovic.chatup.persistence
+package josip.cukovic.chatup.data
 
 
-import josip.cukovic.chatup.model.Message
+import josip.cukovic.chatup.models.Message
 
 
 object MessageRepository {

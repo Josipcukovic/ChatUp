@@ -42,7 +42,7 @@
         app:layout_constraintTop_toBottomOf="@id/toptGuideLine"
         app:layout_constraintLeft_toRightOf="@id/leftGuideLine"
         app:layout_constraintRight_toLeftOf="@id/rightGuideLine"
-        android:text="REGISTRATION"/>
+        android:text="@string/registration"/>
 
     <EditText
         android:id="@+id/etName"
@@ -55,7 +55,7 @@
         app:layout_constraintRight_toLeftOf="@id/rightGuideLine"
         android:textSize="20sp"
         android:inputType="textPersonName"
-        android:hint="Enter Your name"/>
+        android:hint="@string/enter_your_name"/>
 
     <EditText
         android:id="@+id/etSurname"
@@ -67,7 +67,7 @@
         app:layout_constraintLeft_toRightOf="@+id/leftGuideLine"
         app:layout_constraintRight_toLeftOf="@id/rightGuideLine"
         android:textSize="20sp"
-        android:hint="Enter Your surname"/>
+        android:hint="@string/enter_your_surname"/>
 
     <EditText
         android:id="@+id/etEmail"
@@ -79,7 +79,7 @@
         app:layout_constraintLeft_toRightOf="@+id/leftGuideLine"
         app:layout_constraintRight_toLeftOf="@id/rightGuideLine"
         android:textSize="20sp"
-        android:hint="Enter Your email"/>
+        android:hint="@string/enter_your_email"/>
 
     <EditText
         android:id="@+id/etPassword"
@@ -91,7 +91,7 @@
         app:layout_constraintLeft_toRightOf="@+id/leftGuideLine"
         app:layout_constraintRight_toLeftOf="@id/rightGuideLine"
         android:textSize="20sp"
-        android:hint="Enter Your password"/>
+        android:hint="@string/enter_your_password"/>
     <Button
         android:id="@+id/btnRegister"
         android:layout_width="0dp"
@@ -99,7 +99,7 @@
         app:layout_constraintLeft_toRightOf="@id/leftGuideLine"
         app:layout_constraintRight_toLeftOf="@id/rightGuideLine"
         app:layout_constraintTop_toBottomOf="@id/etPassword"
-        android:text="REGISTER"
+        android:text="@string/register"
         android:textSize="20sp"
         android:layout_margin="10dp"/>
 

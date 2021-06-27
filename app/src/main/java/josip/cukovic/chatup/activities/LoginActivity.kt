@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import josip.cukovic.chatup.databinding.ActivityLoginBinding
-import josip.cukovic.chatup.persistence.Firebase
+import josip.cukovic.chatup.data.Firebase
 
 
 class LoginActivity : AppCompatActivity() {

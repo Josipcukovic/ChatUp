@@ -5,7 +5,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import josip.cukovic.chatup.fragments.FragmentChat
 import josip.cukovic.chatup.fragments.FragmentUsers
-import josip.cukovic.chatup.persistence.MessageRepository
 
 class FragmentAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
 

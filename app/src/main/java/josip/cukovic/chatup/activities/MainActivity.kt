@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import josip.cukovic.chatup.databinding.ActivityMainBinding
 import josip.cukovic.chatup.manager.PreferenceManager
-import josip.cukovic.chatup.persistence.Firebase
+import josip.cukovic.chatup.data.Firebase
 
 
 class MainActivity : AppCompatActivity() {

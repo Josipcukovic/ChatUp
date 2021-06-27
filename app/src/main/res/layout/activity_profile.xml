@@ -26,7 +26,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_margin="20dp"
-        android:text="This is your name"
+        android:text="@string/this_is_your_name_placeholder"
         android:textSize="25sp"
         android:textAlignment="center"/>
     <TextView
@@ -37,7 +37,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_margin="20dp"
-        android:text="This is your email"
+        android:text="@string/this_is_your_email_placeholder"
         android:textSize="25sp"
         android:textAlignment="center"/>
 

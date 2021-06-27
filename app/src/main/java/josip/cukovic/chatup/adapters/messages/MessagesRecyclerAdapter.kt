@@ -1,13 +1,10 @@
-package josip.cukovic.chatup.adapters
+package josip.cukovic.chatup.adapters.messages
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import josip.cukovic.chatup.R
-import josip.cukovic.chatup.model.Message
-import josip.cukovic.chatup.model.User
-import josip.cukovic.chatup.persistence.Firebase
+import josip.cukovic.chatup.models.Message
 
 class MessagesRecyclerAdapter(messages : MutableList<Message>): RecyclerView.Adapter<MessagesViewHolder>() {
     private val messages: MutableList<Message> = mutableListOf()

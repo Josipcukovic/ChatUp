@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import josip.cukovic.chatup.databinding.ActivityRegisterBinding
-import josip.cukovic.chatup.persistence.Firebase
+import josip.cukovic.chatup.data.Firebase
 
 
 class RegisterActivity : AppCompatActivity() {
@@ -28,7 +28,7 @@ class RegisterActivity : AppCompatActivity() {
             if(email.isEmpty() || name.isEmpty() || surname.isEmpty() || password.isEmpty()){
                 Toast.makeText(this, "Please fill in all the fields", Toast.LENGTH_SHORT).show()
             }else{
-                val userName = name + " " + surname
+                val userName = "$name $surname"
 
                 Firebase.createUser(email, password, userName)
             }

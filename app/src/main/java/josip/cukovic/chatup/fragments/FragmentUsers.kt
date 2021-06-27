@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import josip.cukovic.chatup.adapters.UsersRecyclerAdapter
+import josip.cukovic.chatup.adapters.users.UsersRecyclerAdapter
 import josip.cukovic.chatup.databinding.FragmentUsersBinding
-import josip.cukovic.chatup.persistence.Firebase
-import josip.cukovic.chatup.persistence.UserRepository
+import josip.cukovic.chatup.data.Firebase
+import josip.cukovic.chatup.data.UserRepository
 
 class FragmentUsers: Fragment() {
     lateinit var userFragmentBinding : FragmentUsersBinding
@@ -27,18 +27,12 @@ class FragmentUsers: Fragment() {
         userFragmentBinding = FragmentUsersBinding.inflate(inflater,container,false)
         userFragmentBinding.userRecycler.layoutManager = LinearLayoutManager(context,RecyclerView.VERTICAL,false)
         displayData()
-
-
         return userFragmentBinding.root
     }
 
     private fun displayData() {
         userFragmentBinding.userRecycler.adapter = UsersRecyclerAdapter(UserRepository.users)
         adapter = userFragmentBinding.userRecycler.adapter as UsersRecyclerAdapter
-        /*val recycler = userFragmentBinding.userRecycler
-        val adapter = userFragmentBinding.userRecycler.adapter as UsersRecyclerAdapter
-        Firebase.loadData(adapter,recycler)*/
-
     }
 
     override fun onPause() {
@@ -50,13 +44,5 @@ class FragmentUsers: Fragment() {
         super.onResume()
         Firebase.loadUsers()
     }
-
-
-    /*override fun setUserVisibleHint(isVisibleToUser: Boolean) {
-        super.setUserVisibleHint(isVisibleToUser)
-        if(isVisibleToUser){
-
-        }
-    }*/
 
 }

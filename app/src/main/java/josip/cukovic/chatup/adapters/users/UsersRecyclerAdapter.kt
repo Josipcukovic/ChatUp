@@ -1,11 +1,11 @@
-package josip.cukovic.chatup.adapters
+package josip.cukovic.chatup.adapters.users
 
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import josip.cukovic.chatup.R
-import josip.cukovic.chatup.model.User
+import josip.cukovic.chatup.models.User
 
 class UsersRecyclerAdapter(users: MutableList<User>): RecyclerView.Adapter<UsersViewHolder>() {
     private val users: MutableList<User> = mutableListOf()

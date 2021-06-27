@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import josip.cukovic.chatup.adapters.UnreadMessagesRecyclerAdapter
+import josip.cukovic.chatup.adapters.unreadmessages.UnreadMessagesRecyclerAdapter
 import josip.cukovic.chatup.databinding.FragmentChatBinding
-import josip.cukovic.chatup.persistence.Firebase
-import josip.cukovic.chatup.persistence.MessageRepository
-import josip.cukovic.chatup.persistence.UserRepository
+import josip.cukovic.chatup.data.Firebase
+import josip.cukovic.chatup.data.MessageRepository
+import josip.cukovic.chatup.data.UserRepository
 
 class FragmentChat: Fragment() {
     lateinit var fragmentChatBinding: FragmentChatBinding
@@ -30,8 +30,6 @@ class FragmentChat: Fragment() {
         return fragmentChatBinding.root
     }
 
-
-
     private fun setupUi() {
         fragmentChatBinding.unreadMessagesRecycler.adapter = UnreadMessagesRecyclerAdapter(MessageRepository.unreadMessages)
         val  recycler = fragmentChatBinding.unreadMessagesRecycler
@@ -39,14 +37,6 @@ class FragmentChat: Fragment() {
 
         Firebase.updateUnreadMessage()
     }
-
-
-    /*override fun setUserVisibleHint(isVisibleToUser: Boolean) {
-        super.setUserVisibleHint(isVisibleToUser)
-        if(isVisibleToUser){
-
-        }
-    }*/
 
     override fun onResume() {
         super.onResume()

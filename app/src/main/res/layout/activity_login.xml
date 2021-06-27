@@ -42,7 +42,7 @@
         app:layout_constraintTop_toBottomOf="@id/toptGuideLine"
         app:layout_constraintLeft_toRightOf="@id/leftGuideLine"
         app:layout_constraintRight_toLeftOf="@id/rightGuideLine"
-        android:text="LOGIN"/>
+        android:text="@string/login_title"/>
 
     <EditText
         android:id="@+id/etEmail"
@@ -51,7 +51,7 @@
         app:layout_constraintLeft_toRightOf="@id/leftGuideLine"
         app:layout_constraintRight_toLeftOf="@id/rightGuideLine"
         app:layout_constraintTop_toBottomOf="@id/tvCaption"
-        android:hint="Enter Your email"
+        android:hint="@string/enter_your_email"
         android:textSize="20sp"
         android:layout_margin="10dp"
         android:inputType="textEmailAddress"/>
@@ -66,7 +66,7 @@
         app:layout_constraintLeft_toRightOf="@+id/leftGuideLine"
         app:layout_constraintRight_toLeftOf="@id/rightGuideLine"
         android:textSize="20sp"
-        android:hint="Enter Your password"/>
+        android:hint="@string/enter_your_password"/>
 
     <Button
         android:id="@+id/btnLogin"
@@ -75,7 +75,7 @@
         app:layout_constraintLeft_toRightOf="@id/leftGuideLine"
         app:layout_constraintRight_toLeftOf="@id/rightGuideLine"
         app:layout_constraintTop_toBottomOf="@id/etPassword"
-        android:text="LOGIN"
+        android:text="@string/login_title"
         android:textSize="20sp"
         android:layout_margin="10dp"/>
 

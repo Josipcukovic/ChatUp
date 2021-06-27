@@ -11,11 +11,11 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import josip.cukovic.chatup.R
 import josip.cukovic.chatup.adapters.FragmentAdapter
-import josip.cukovic.chatup.adapters.UnreadMessagesRecyclerAdapter
+import josip.cukovic.chatup.adapters.unreadmessages.UnreadMessagesRecyclerAdapter
 import josip.cukovic.chatup.databinding.ActivityAuthBinding
-import josip.cukovic.chatup.persistence.Firebase
-import josip.cukovic.chatup.persistence.MessageRepository
-import josip.cukovic.chatup.persistence.UserRepository
+import josip.cukovic.chatup.data.Firebase
+import josip.cukovic.chatup.data.MessageRepository
+import josip.cukovic.chatup.data.UserRepository
 
 
 class AuthActivity : AppCompatActivity() {

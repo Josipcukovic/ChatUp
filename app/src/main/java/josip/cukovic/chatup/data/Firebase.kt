@@ -1,4 +1,4 @@
-package josip.cukovic.chatup.persistence
+package josip.cukovic.chatup.data
 
 
 
@@ -16,8 +16,8 @@ import josip.cukovic.chatup.activities.ChatActivity
 import josip.cukovic.chatup.fragments.FragmentChat
 import josip.cukovic.chatup.fragments.FragmentUsers
 import josip.cukovic.chatup.manager.PreferenceManager
-import josip.cukovic.chatup.model.Message
-import josip.cukovic.chatup.model.User
+import josip.cukovic.chatup.models.Message
+import josip.cukovic.chatup.models.User
 
 object Firebase {
 
@@ -33,11 +33,11 @@ object Firebase {
     fun loadUsers(){
     childEventListenerData = object: ChildEventListener{
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-               // val userId = snapshot.key
-                val userData =  snapshot.getValue() as HashMap<String, String>
 
-                    val korisnik =  User(userData.get("name").toString(), userData.get("email").toString(), userData.get("id").toString())
-                    UserRepository.add(korisnik)
+                val userData =  snapshot.value as HashMap<String, String>
+
+                    val user =  User(userData["name"].toString(), userData["email"].toString(), userData["id"].toString())
+                    UserRepository.add(user)
                     FragmentUsers.adapter.dataAdded(UserRepository.users)
 
             }
@@ -57,15 +57,15 @@ object Firebase {
         childEventListenerMessages = object: ChildEventListener{
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
 
-                val messageData =  snapshot.getValue() as HashMap<String, String>
-///kasnije refaktoriraj
-                val recieverId = messageData.get("receiverId").toString()
-                val senderId = messageData.get("senderId").toString()
+                val messageData =  snapshot.value as HashMap<String, String>
+
+                val recieverId = messageData["receiverId"].toString()
+                val senderId = messageData["senderId"].toString()
                 val chosenUserId = UserRepository.userId
                 val currentUser = getCurrentUserId()
 ///provjeri jel smije vidjet poruku uopce
                 if((recieverId == currentUser && senderId == chosenUserId) || (recieverId == chosenUserId && senderId == currentUser )){
-                    val poruka =  Message(messageData.get("textMessage").toString(), messageData.get("senderId").toString(), messageData.get("receiverId").toString(),messageData["messageSeen"].toString())
+                    val poruka =  Message(messageData["textMessage"].toString(), messageData["senderId"].toString(), messageData["receiverId"].toString(),messageData["messageSeen"].toString())
 
                     ///update seen
                     if ((chosenUserId == senderId) && (currentUser == recieverId) && (poruka.messageSeen == "false")) {
@@ -94,10 +94,10 @@ object Firebase {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 MessageRepository.removeAllUnreadMessages()
                 for (postSnapshot in dataSnapshot.children) {
-                    val messageData = postSnapshot.getValue() as HashMap<String, String>
+                    val messageData = postSnapshot.value as HashMap<String, String>
 
-                    val recieverId = messageData.get("receiverId").toString()
-                    val senderId = messageData.get("senderId").toString()
+                    val recieverId = messageData["receiverId"].toString()
+                    val senderId = messageData["senderId"].toString()
                     val chosenUserId = UserRepository.userId
                     val currentUser = getCurrentUserId()
 

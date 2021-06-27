@@ -1,12 +1,10 @@
-package josip.cukovic.chatup.adapters
+package josip.cukovic.chatup.adapters.unreadmessages
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import josip.cukovic.chatup.ChatUpApplication
 import josip.cukovic.chatup.R
-import josip.cukovic.chatup.model.Message
+import josip.cukovic.chatup.models.Message
 
 class UnreadMessagesRecyclerAdapter(message: MutableList<Message>): RecyclerView.Adapter<UnreadMessagesViewHolder>() {
     val messages: MutableList<Message> = mutableListOf()

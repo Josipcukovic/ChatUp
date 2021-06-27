@@ -8,17 +8,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import josip.cukovic.chatup.R
 import josip.cukovic.chatup.SoundPool
-import josip.cukovic.chatup.adapters.MessagesRecyclerAdapter
+import josip.cukovic.chatup.adapters.messages.MessagesRecyclerAdapter
 import josip.cukovic.chatup.databinding.ActivityChatBinding
-import josip.cukovic.chatup.persistence.Firebase
-import josip.cukovic.chatup.persistence.MessageRepository
-import josip.cukovic.chatup.persistence.UserRepository
+import josip.cukovic.chatup.data.Firebase
+import josip.cukovic.chatup.data.MessageRepository
+import josip.cukovic.chatup.data.UserRepository
 
 
 class ChatActivity : AppCompatActivity() {
     private lateinit var chatBinding: ActivityChatBinding
     var userId: String = ""
     private val sound = SoundPool()
+
     companion object{
         lateinit var recyclerView: RecyclerView
        lateinit var adapter: MessagesRecyclerAdapter
@@ -30,11 +31,11 @@ class ChatActivity : AppCompatActivity() {
         setContentView(chatBinding.root)
 
         val userName = intent.extras?.getString("name").toString()
-        supportActionBar!!.title = userName
-
         userId = intent.extras?.getString("id").toString()
 
+        supportActionBar!!.title = userName
         UserRepository.userId = userId
+
         setupUi()
         sound.loadSounds()
     }
@@ -47,14 +48,14 @@ class ChatActivity : AppCompatActivity() {
         displayData()
         chatBinding.sendMsgBtn.setOnClickListener{
 
-            val poruka = chatBinding.inputMessageEt.text.toString().trim()
+            val messageText = chatBinding.inputMessageEt.text.toString().trim()
 
-            if(poruka.isNotEmpty()){
+            if(messageText.isNotEmpty()){
                 chatBinding.inputMessageEt.text.clear()
                 val sender = Firebase.getCurrentUserId().toString()
                 val receiver = userId
                 sound.playSound(R.raw.mesagesent)
-                Firebase.saveMessage(poruka,sender,receiver,"false")
+                Firebase.saveMessage(messageText,sender,receiver,"false")
             }else{
                 Toast.makeText(this, "You can't send empty message", Toast.LENGTH_SHORT).show()
             }
@@ -68,7 +69,7 @@ class ChatActivity : AppCompatActivity() {
         chatBinding.messageRecycler.adapter = MessagesRecyclerAdapter(MessageRepository.messages)
         val recycler = chatBinding.messageRecycler
         val adapter = recycler.adapter as MessagesRecyclerAdapter
-        ChatActivity.recyclerView = recycler
+        recyclerView = recycler
         ChatActivity.adapter = adapter
 
         Firebase.loadMessages()

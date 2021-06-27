@@ -2,4 +2,18 @@
     <string name="app_name">ChatUp</string>
     <string name="login">Login</string>
     <string name="register">Register</string>
+    <string name="your_message">Your message..</string>
+    <string name="send">Send</string>
+    <string name="login_title">LOGIN</string>
+    <string name="enter_your_email">Enter Your email</string>
+    <string name="enter_your_password">Enter Your password</string>
+    <string name="this_is_your_name_placeholder">This is your name</string>
+    <string name="this_is_your_email_placeholder">This is your email</string>
+    <string name="registration">REGISTRATION</string>
+    <string name="enter_your_name">Enter Your name</string>
+    <string name="enter_your_surname">Enter Your surname</string>
+    <string name="moja_poruka">moja poruka</string>
+    <string name="your_name">Your name</string>
+    <string name="your_unread_message">Your unread message</string>
+    <string name="your_email">Your email</string>
 </resources>

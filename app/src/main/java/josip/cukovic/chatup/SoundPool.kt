@@ -10,7 +10,7 @@ class SoundPool {
 
     fun loadSounds(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            soundPool = SoundPool.Builder().setMaxStreams(10).build()
+            soundPool = SoundPool.Builder().setMaxStreams(1).build()
         } else {
             soundPool = SoundPool(1, AudioManager.STREAM_MUSIC, 0)
        }
