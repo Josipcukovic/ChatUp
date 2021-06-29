@@ -29,7 +29,6 @@ object Firebase {
     private var childEventListenerMessages: ChildEventListener? = null
 
 
-///pokusaj dohvacanja podataka
     fun loadUsers(){
     childEventListenerData = object: ChildEventListener{
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
@@ -63,7 +62,7 @@ object Firebase {
                 val senderId = messageData["senderId"].toString()
                 val chosenUserId = UserRepository.userId
                 val currentUser = getCurrentUserId()
-///provjeri jel smije vidjet poruku uopce
+
                 if((recieverId == currentUser && senderId == chosenUserId) || (recieverId == chosenUserId && senderId == currentUser )){
                     val poruka =  Message(messageData["textMessage"].toString(), messageData["senderId"].toString(), messageData["receiverId"].toString(),messageData["messageSeen"].toString())
 
@@ -131,7 +130,6 @@ object Firebase {
                       Toast.makeText(context, task.exception!!.message.toString(), Toast.LENGTH_SHORT).show()
                   }
               }
-
   }
 
     private fun addUserToDatabase(email: String, userName: String){
@@ -197,8 +195,7 @@ object Firebase {
     }
 
     fun logOut(){
-        UserRepository.clearAllUsers()
-        usersDbRef.removeEventListener(childEventListenerData as ChildEventListener)
+        unsubscribeUserListener()
         PreferenceManager().saveEmail("default")
         PreferenceManager().savePassword("default")
         authFirebase.signOut()
