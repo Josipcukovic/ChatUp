@@ -8,23 +8,23 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import josip.cukovic.chatup.adapters.unreadmessages.UnreadMessagesRecyclerAdapter
-import josip.cukovic.chatup.databinding.FragmentChatBinding
 import josip.cukovic.chatup.data.Firebase
 import josip.cukovic.chatup.data.MessageRepository
 import josip.cukovic.chatup.data.UserRepository
+import josip.cukovic.chatup.databinding.FragmentUnreadMessagesBinding
 
-class FragmentChat: Fragment() {
-    lateinit var fragmentChatBinding: FragmentChatBinding
+class FragmentUnreadMessages: Fragment() {
+    lateinit var fragmentChatBinding: FragmentUnreadMessagesBinding
 
     companion object {
-        fun newInstance(): FragmentChat{
-            return FragmentChat()
+        fun newInstance(): FragmentUnreadMessages{
+            return FragmentUnreadMessages()
         }
         lateinit var adapter: UnreadMessagesRecyclerAdapter
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        fragmentChatBinding = FragmentChatBinding.inflate(inflater,container,false)
+        fragmentChatBinding = FragmentUnreadMessagesBinding.inflate(inflater,container,false)
         fragmentChatBinding.unreadMessagesRecycler.layoutManager = LinearLayoutManager(context,RecyclerView.VERTICAL,false)
         setupUi()
         return fragmentChatBinding.root

@@ -13,7 +13,7 @@ import com.google.firebase.database.*
 import josip.cukovic.chatup.ChatUpApplication
 import josip.cukovic.chatup.activities.AuthActivity
 import josip.cukovic.chatup.activities.ChatActivity
-import josip.cukovic.chatup.fragments.FragmentChat
+import josip.cukovic.chatup.fragments.FragmentUnreadMessages
 import josip.cukovic.chatup.fragments.FragmentUsers
 import josip.cukovic.chatup.manager.PreferenceManager
 import josip.cukovic.chatup.models.Message
@@ -106,7 +106,7 @@ object Firebase {
                         MessageRepository.addUnreadMessage(message)
 
                     }
-                    FragmentChat.adapter.dataChanged(MessageRepository.unreadMessages)
+                    FragmentUnreadMessages.adapter.dataChanged(MessageRepository.unreadMessages)
                 }
             }
 
