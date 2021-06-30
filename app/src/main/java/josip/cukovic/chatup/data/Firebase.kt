@@ -47,8 +47,9 @@ object Firebase {
             override fun onCancelled(error: DatabaseError) {}
 
         }
-         usersDbRef.addChildEventListener(childEventListenerData as ChildEventListener)
 
+        val  query: Query = usersDbRef.orderByChild("name")
+        query.addChildEventListener(childEventListenerData as ChildEventListener)
     }
 
 
